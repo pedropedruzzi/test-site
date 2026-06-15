@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS-Only Scroll Test</title>
+    <style>
+        /* TEST OBJECTIVE: 
+          Replacing 'height: 100%' with flexible 'min-height' and dynamic viewport units.
+        */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+            min-height: 100dvh; /* Dynamically scales when UI elements shift */
+            background-color: #f3f4f6;
+            font-family: -apple-system, sans-serif;
+        }
+
+        #root {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            padding: 20px;
+            min-height: 100%;
+            min-height: 100dvh;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px; 
+        }
+
+        .spacer {
+            height: 50vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            font-style: italic;
+            border: 2px dashed #e5e7eb;
+            margin: 20px 0;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="root">
+        <div class="card">
+            <strong>Top Content Box</strong>
+            <p>Standard static positioning testing.</p>
+            <input type="text" placeholder="Top input...">
+        </div>
+
+        <div class="spacer">
+            Viewport Spacer (50vh)
+        </div>
+
+        <div class="card">
+            <strong>The CSS Test Area</strong>
+            <p>Tap this input. If the screen becomes scrollable, the min-height adjustment successfully bypassed Instagram's layout lock.</p>
+            <input type="text" placeholder="Tap to test CSS-only scroll...">
+        </div>
+    </div>
+
+</body>
+</html>
