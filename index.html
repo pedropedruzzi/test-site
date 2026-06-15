@@ -3,19 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scroll Padding Test</title>
+    <title>Definitive IAB Fix</title>
     <style>
-        html {
-            /* THE CLEAN FIX: Forces the browser to keep focused elements 
-               at least 40% of the screen height away from the bottom edge. */
-            scroll-padding-bottom: 40vh; 
-        }
-
         html, body {
             margin: 0;
             padding: 0;
             width: 100%;
-            min-height: 100%;
             min-height: 100dvh;
             background-color: #f3f4f6;
             font-family: -apple-system, sans-serif;
@@ -27,8 +20,14 @@
             justify-content: space-between;
             box-sizing: border-box;
             padding: 20px;
-            min-height: 100%;
             min-height: 100dvh;
+            /* Smoothly animate the layout shift when the keyboard opens */
+            transition: padding-bottom 0.2s ease-out;
+        }
+
+        /* This class is cleanly toggled by JavaScript ONLY when an input is active */
+        .keyboard-active #root {
+            padding-bottom: 45vh; 
         }
 
         .card {
@@ -49,7 +48,7 @@
         }
 
         .spacer {
-            height: 60vh; /* Pushes the test area deep into the keyboard zone */
+            height: 60vh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -65,20 +64,37 @@
 
     <div id="root">
         <div class="card">
-            <strong>Top Content Box</strong>
+            <strong>Top Content</strong>
             <input type="text" placeholder="Top input...">
         </div>
 
-        <div class="spacer">
-            Viewport Spacer (60vh)
-        </div>
+        <div class="spacer">Viewport Spacer (60vh)</div>
 
         <div class="card">
-            <strong>The Scroll-Padding Test Area</strong>
-            <p>Tap this input. The browser's native scroll-into-view function should now snap this input well above the keyboard alignment line.</p>
-            <input type="text" placeholder="Tap to test scroll padding...">
+            <strong>The Blind-Browser Test</strong>
+            <p>When tapped, JS will instantly grant the browser permission to scroll, clearing the floating keyboard.</p>
+            <input type="text" placeholder="Tap to test active scroll...">
         </div>
     </div>
 
+    <script>
+        // Clean global listeners. No wrapper or individual element bindings required.
+        document.addEventListener('focusin', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                document.body.classList.add('keyboard-active');
+                
+                // Allow the 45vh padding transition to finish, then center the input
+                setTimeout(() => {
+                    e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 250);
+            }
+        });
+
+        document.addEventListener('focusout', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                document.body.classList.remove('keyboard-active');
+            }
+        });
+    </script>
 </body>
 </html>
