@@ -3,17 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS-Only Scroll Test</title>
+    <title>Scroll Padding Test</title>
     <style>
-        /* TEST OBJECTIVE: 
-          Replacing 'height: 100%' with flexible 'min-height' and dynamic viewport units.
-        */
+        html {
+            /* THE CLEAN FIX: Forces the browser to keep focused elements 
+               at least 40% of the screen height away from the bottom edge. */
+            scroll-padding-bottom: 40vh; 
+        }
+
         html, body {
             margin: 0;
             padding: 0;
             width: 100%;
             min-height: 100%;
-            min-height: 100dvh; /* Dynamically scales when UI elements shift */
+            min-height: 100dvh;
             background-color: #f3f4f6;
             font-family: -apple-system, sans-serif;
         }
@@ -46,7 +49,7 @@
         }
 
         .spacer {
-            height: 50vh;
+            height: 60vh; /* Pushes the test area deep into the keyboard zone */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -63,18 +66,17 @@
     <div id="root">
         <div class="card">
             <strong>Top Content Box</strong>
-            <p>Standard static positioning testing.</p>
             <input type="text" placeholder="Top input...">
         </div>
 
         <div class="spacer">
-            Viewport Spacer (50vh)
+            Viewport Spacer (60vh)
         </div>
 
         <div class="card">
-            <strong>The CSS Test Area</strong>
-            <p>Tap this input. If the screen becomes scrollable, the min-height adjustment successfully bypassed Instagram's layout lock.</p>
-            <input type="text" placeholder="Tap to test CSS-only scroll...">
+            <strong>The Scroll-Padding Test Area</strong>
+            <p>Tap this input. The browser's native scroll-into-view function should now snap this input well above the keyboard alignment line.</p>
+            <input type="text" placeholder="Tap to test scroll padding...">
         </div>
     </div>
 
